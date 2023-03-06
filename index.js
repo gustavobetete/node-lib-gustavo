@@ -2,4 +2,4 @@ import chalk from "chalk";
 
 console.log('olá mundo');
 
-console.log(chalk.blue('Hello World!'));
+console.log(chalk.red('Hello World!'));
