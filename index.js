@@ -5,6 +5,12 @@ function trataErro(erro){
     throw new Error(chalk.red(erro.code, 'não há arquivo no diretório'))
 }
 
+function extraiLinks(texto) {
+    const regex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm;
+    const capturas = [...texto.matchAll(regex)];
+    return capturas.map((el) => ({[el[1]]: el[2]}));
+}
+
 //função utilizando promises com then >>> assíncrona
 
 function pegaArquivo(caminhoDoArquivo){
@@ -20,7 +26,7 @@ async function pegaArquivo2(caminhoDoArquivo){
     try{
         const encoding = 'utf-8';
         const texto = await fs.promises.readFile(caminhoDoArquivo, encoding)
-        console.log(chalk.magenta(texto))
+        console.log(extraiLinks(texto))
     }catch (erro){
         trataErro(erro)
     }finally {
@@ -28,5 +34,5 @@ async function pegaArquivo2(caminhoDoArquivo){
     }
 }
 
-pegaArquivo('./arquivos/texto.md')
+// pegaArquivo('./arquivos/texto.md')
 pegaArquivo2('./arquivos/texto.md')
