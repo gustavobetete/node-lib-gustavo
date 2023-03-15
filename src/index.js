@@ -8,7 +8,8 @@ function trataErro(erro){
 function extraiLinks(texto) {
     const regex = /\[([^[\]]*?)\]\((https?:\/\/[^\s?#.].[^\s]*)\)/gm;
     const capturas = [...texto.matchAll(regex)];
-    return capturas.map((el) => ({[el[1]]: el[2]}));
+    const resultados =  capturas.map((el) => ({[el[1]]: el[2]}));
+    return resultados.length !== 0 ? resultados : 'Não há links no arquivo';
 }
 
 //função utilizando promises com then >>> assíncrona
@@ -26,7 +27,7 @@ async function pegaArquivo2(caminhoDoArquivo){
     try{
         const encoding = 'utf-8';
         const texto = await fs.promises.readFile(caminhoDoArquivo, encoding)
-        console.log(extraiLinks(texto))
+        return extraiLinks(texto)
     }catch (erro){
         trataErro(erro)
     }finally {
@@ -34,5 +35,4 @@ async function pegaArquivo2(caminhoDoArquivo){
     }
 }
 
-// pegaArquivo('./arquivos/texto.md')
-pegaArquivo2('./arquivos/texto.md')
+export default pegaArquivo2;
